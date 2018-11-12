@@ -1,0 +1,43 @@
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ccc;
+  width: 50%;
+  height: 20%;
+  z-index: 2;
+  border: 1px solid;
+  padding: 1em;
+}
+/* success modal transitions */
+.success-enter {
+    opacity: 0.01;
+    height: 0%;
+    width: 0%;
+    /* transform: scale(0.1);  */
+  }
+  
+  .success-enter.success-enter-active {
+    opacity: 1;
+    height: 20%;
+    width: 50%;
+    /* transform: scale(1); */
+    transition: all 500ms;
+  }
+  
+  .success-leave {
+    opacity: 1;
+    height: 20%;
+    width: 50%;
+    /* transform: scale(1); */
+  }
+  
+  .success-leave.success-leave-active {
+    opacity: 0.01;
+    height: 0%;
+    width: 0%;
+    /* transform: scale(0.1); */
+    transition: all 500ms;
+  }
+  /* success modal transitions */

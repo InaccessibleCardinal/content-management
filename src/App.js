@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-//import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import './App.css';
 import axios from 'axios';
 import Header from './components/Header';
 import FileUpload from './components/FileUpload';
@@ -165,7 +166,30 @@ class App extends Component {
                 }
                 {(images.length > 0) && images}
                 {(images.length > 0) && <SubmitButton handleSubmit={this.handleSubmit} />}
-                {modalShowing && <SuccessMessage closeModal={this.closeModal} />}
+                    <ReactCSSTransitionGroup
+                        transitionName="success"
+                        transitionEnterTimeout={500}
+                        transitionLeaveTimeout={500}
+                    >
+                      {modalShowing && <SuccessMessage closeModal={this.closeModal} key="successMessage" /> }
+                    </ReactCSSTransitionGroup>
+                    {
+                      modalShowing && 
+                        <div 
+                            style={
+                            {
+                                position: 'fixed',
+                                top: '0',
+                                left: '0',
+                                width: '100%',
+                                height: '100%',
+                                backgroundColor: '#000',
+                                opacity: '0.6'
+                            }
+                        } 
+                            onClick={this.closeModal} 
+                        />
+                    }
             </div>
       );
     }
@@ -182,20 +206,8 @@ function SubmitButton({handleSubmit}) {
 }
 
 function SuccessMessage({closeModal}) {
-    const modalStyle = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        backgroundColor: '#ccc',
-        width: '80%',
-        height: '300px',
-        zIndex: 2,
-        border: '1px solid',
-        padding: '1em'
-    };
     return (
-        <div style={modalStyle}>
+        <div className="modal">
             <button onClick={closeModal}>X</button>
             <p>Post Successful</p>
         </div>
