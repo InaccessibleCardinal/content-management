@@ -17,13 +17,16 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            images: []
+            images: [],
+            modalShowing: false
         };
         this.removeField = this.removeField.bind(this);
         this.readFiles = this.readFiles.bind(this);
         this.updateDescription = this.updateDescription.bind(this);
         this.updateImageCategoryList = this.updateImageCategoryList.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.closeModal = this.closeModal.bind(this)
+        this.showModal = this.showModal.bind(this);
     }
 
     removeField(e, uid) {
@@ -73,7 +76,7 @@ class App extends Component {
                 {name: 'categories', value: updatedCategories}
             ]
         );
-        this.setState({images: updatedImages}, () => console.log('new state: ', this.state));
+        this.setState({images: updatedImages});
 
     }
 
@@ -116,14 +119,21 @@ class App extends Component {
         axios.post('http://localhost:9876/images', payload)
             .then((r) => {
                 console.log(r.data);
-                this.setState({images: []});
+                this.setState({images: [], modalShowing: true});
                 $id('file-input').value = '';
             })
             .catch((e) => console.log('post failed: ', e));
     }
+    showModal() {
+        this.setState({modalShowing: true})
+    }
+
+    closeModal() {
+        this.setState({modalShowing: false});
+    }
 
     render() {
-        
+        let {modalShowing} = this.state;
         let images = this.state.images.map((im, i) => {
             return (
                 <ImageConfig 
@@ -141,6 +151,7 @@ class App extends Component {
             <div className="App">
                 <Header />
                 <button onClick={() => console.log(this.state.images)}>Dump State</button>
+                <button onClick={this.showModal}>Show Modal</button>
                 <FileUpload 
                     readFiles={this.readFiles}
                 />
@@ -154,6 +165,7 @@ class App extends Component {
                 }
                 {(images.length > 0) && images}
                 {(images.length > 0) && <SubmitButton handleSubmit={this.handleSubmit} />}
+                {modalShowing && <SuccessMessage closeModal={this.closeModal} />}
             </div>
       );
     }
@@ -165,6 +177,27 @@ function SubmitButton({handleSubmit}) {
     return (
         <div>
             <button onClick={handleSubmit}>Submit</button>
+        </div>
+    );
+}
+
+function SuccessMessage({closeModal}) {
+    const modalStyle = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        backgroundColor: '#ccc',
+        width: '80%',
+        height: '300px',
+        zIndex: 2,
+        border: '1px solid',
+        padding: '1em'
+    };
+    return (
+        <div style={modalStyle}>
+            <button onClick={closeModal}>X</button>
+            <p>Post Successful</p>
         </div>
     );
 }
