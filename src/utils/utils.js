@@ -62,3 +62,7 @@ export function $id(id) {
         return document.getElementById(id);
     }
 }
+
+export function makeThumbnailName(jpgName) {
+    return jpgName.split('.jpg')[0] + '_s.jpg';
+}

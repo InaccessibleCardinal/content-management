@@ -5,12 +5,15 @@ import axios from 'axios';
 import Header from './components/Header';
 import FileUpload from './components/FileUpload';
 import ImageConfig from './components/ImageConfig';
+import SuccessMessage from './components/SuccessMessage';
+import SubmitButton from './components/SubmitButton';
 import uuid from './utils/uuid';
 import {categories} from './config';
 import {
     getFromListById, 
     removeFromListById, 
-    updateInListById, 
+    updateInListById,
+    makeThumbnailName, 
     $id
 } from './utils/utils';
 
@@ -100,6 +103,7 @@ class App extends Component {
                     src: e.target.result, 
                     uid: uid, 
                     fileName: f.name,
+                    thumbnailName: makeThumbnailName(f.name),
                     description: '',
                     categories: []
                 });
@@ -116,8 +120,20 @@ class App extends Component {
     }
 
     handleSubmit() {
-        let payload = {images: this.state.images};
-        axios.post('http://localhost:9876/images', payload)
+        let images = this.state.images;
+        let categories = [];
+        images.forEach((im) => {
+            let imCats = im.categories;
+            imCats.forEach((cat) => {
+                if (categories.indexOf(cat) === - 1) {
+                    categories.push(cat);
+                }
+            });
+        });
+
+        let payload = {images, categories};
+        //axios.post('http://localhost:9876/images', payload)
+        axios.post('http://localhost/image-service/service.php', payload)
             .then((r) => {
                 console.log(r.data);
                 this.setState({images: [], modalShowing: true});
@@ -134,6 +150,7 @@ class App extends Component {
     }
 
     render() {
+        
         let {modalShowing} = this.state;
         let images = this.state.images.map((im, i) => {
             return (
@@ -196,20 +213,3 @@ class App extends Component {
 }
 
 export default App;
-
-function SubmitButton({handleSubmit}) {
-    return (
-        <div>
-            <button onClick={handleSubmit}>Submit</button>
-        </div>
-    );
-}
-
-function SuccessMessage({closeModal}) {
-    return (
-        <div className="modal">
-            <button onClick={closeModal}>X</button>
-            <p>Post Successful</p>
-        </div>
-    );
-}
