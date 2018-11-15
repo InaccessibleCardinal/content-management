@@ -3,7 +3,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #ccc;
+  background-color: #f7f7f7;
   width: 50%;
   height: 20%;
   z-index: 2;
@@ -16,7 +16,7 @@
   height: 80px;
   position: absolute;
   bottom: 1px;
-  background-color: #ccc;
+  background-color: #f7f7f7;
   border: none;
   border-top: 1px solid #888;
   cursor: pointer;

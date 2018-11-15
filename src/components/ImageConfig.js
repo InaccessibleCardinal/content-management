@@ -29,7 +29,7 @@ export default function ImageConfig({
 
     return (
         <div className="image-field" key={uid}>
-            <h3 className="category-header">{fileName} :</h3>
+            <h3 className="category-header file-name">{fileName} :</h3>
             <img src={b64image} width="200px" alt="" />
             <h3 className="category-header">Assign to categories:</h3>
             <div className="checkboxes-wrapper">
@@ -56,6 +56,7 @@ function RemoveButton({removeField, uid}) {
     return (
         <div>
             <button 
+                className="remove-button"
                 onClick={function(e) {
                     removeField(e, uid);
                 }}

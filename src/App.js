@@ -207,9 +207,17 @@ class App extends Component {
                             onClick={this.closeModal} 
                         />
                     }
+                    <div style={{height: 20, margin: '1em'}}></div>
+                    <Footer />
             </div>
       );
     }
 }
 
 export default App;
+
+function Footer() {
+    return (
+        <div className="footer"></div>
+    );
+}
