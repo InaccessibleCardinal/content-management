@@ -35,6 +35,9 @@ code {
   margin: 1em auto;
   box-shadow: 0px 0px 4px #d7d7d7;
 }
+.image-field.edit-copy {
+  width: 100%;
+}
 .category-header {
   margin: 0 0 1em 0;
   font-weight: 400;
@@ -112,9 +115,40 @@ textarea {
   cursor: pointer;
   resize:vertical;
 }
+
 textarea:focus {
   outline: 3px solid #aabbdd;
 }
+.html-label {
+  font-size: 1.5em;
+  font-style: italic; 
+  margin: 0.3em;
+  display: inline;
+}
+.edit-copy-textarea {
+  width: 100%;
+}
+.edit-copy-input {
+  width: 100%;
+  font-size: 1em;
+  height: 30px;
+  margin: auto;
+}
+.edit-copy-x-button {
+  width: 80%;
+  height: 100%;
+  background-color: #fff;
+  border: none;
+  font-size: 2em;
+  
+  cursor: pointer;
+}
+
+.edit-copy-x-button:hover {
+  background-color: #fff;
+  box-shadow: 0px 0px 4px #282828;
+}
+
 input:focus {
   outline: 3px solid #aabbdd;
 }

@@ -13,7 +13,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activePage: 'UploadPage',
+            activePage: 'EditCopyPage',
             pages: ['UploadPage', 'EditCopyPage', 'EditImagesPage', 'EditJobsPage']
         }
        this.navigateTo = this.navigateTo.bind(this);
