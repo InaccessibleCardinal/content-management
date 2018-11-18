@@ -3,6 +3,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import SelectSection from '../components/SelectSection';
 import EditCopyControls from '../components/EditCopyControls';
 import FormField from '../components/FormField';
+import PreviewEditedCopy from '../components/PreviewEditedCopy';
+import SubmitButton from '../components/SubmitButton';
 import {categories} from '../config';
 import uuid from '../utils/uuid';
 import {removeFromListById, updateInListById} from '../utils/utils';
@@ -20,18 +22,21 @@ export default class EditCopyPage extends React.Component {
         this.updateValue = this.updateValue.bind(this);
         this.addFormField = this.addFormField.bind(this);
         this.deleteField = this.deleteField.bind(this);
+        this.getSubFieldData = this.getSubFieldData.bind(this);
         this.selectCategory = this.selectCategory.bind(this);
     }
     selectCategory(e) {
         console.log('category selected: ', e.target.value);
     }
-    updateValue(e, uid) {
-        let value = e.target.value;
+    updateValue(e) {
+        let target = e.target;
+        let {value: v, id: uid} = target;
         let fields = this.state.fields;
-        let res = updateInListById(fields, uid, [{name: 'value', 'value': value}])
+        let res = updateInListById(fields, uid, [{name: 'value', value: v}]);
         this.setState({fields: res});
     }
-    addFormField(type) {
+    addFormField(e) {
+        let type = e.target.id.replace('btn_', '');
         let newFields = this.state.fields
         .concat([
             {
@@ -42,9 +47,18 @@ export default class EditCopyPage extends React.Component {
         ]);
         this.setState({fields: newFields});
     }
-    deleteField(uid) {
-        this.setState({fields: removeFromListById(this.state.fields, uid)})
+
+    deleteField(e) {       
+        let uid = e.target.id.replace('btn_', '');
+        this.setState({fields: removeFromListById(this.state.fields, uid)});
     }
+
+    getSubFieldData(uid, data) {
+        let fields = this.state.fields;
+        let res = updateInListById(fields, uid, [{name: 'subFields', value: data}]);
+        this.setState({fields: res});
+    }
+
     render() {
         let fields = this.state.fields;
 
@@ -54,7 +68,8 @@ export default class EditCopyPage extends React.Component {
                 <FormField 
                     field={f} 
                     updateValue={this.updateValue}
-                    deleteField={this.deleteField} 
+                    deleteField={this.deleteField}
+                    getSubFieldData={this.getSubFieldData} 
                     key={uid}
                 />
             );
@@ -76,57 +91,9 @@ export default class EditCopyPage extends React.Component {
                     </ReactCSSTransitionGroup>
                 </div>
                 <PreviewEditedCopy fieldsForPreview={fields} />
+                <SubmitButton handleSubmit={() => {}} />
             </div>
         );
     }
     
-}
-
-
-class PreviewEditedCopy extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {fieldsForPreview: []};
-    }
-
-    componentWillReceiveProps(nextProps) {
-        let fieldsForPreview = this.props.fieldsForPreview;
-        let nextFieldsForPreview = nextProps.fieldsForPreview;
-        if (nextFieldsForPreview !== fieldsForPreview) {
-            this.setState({fieldsForPreview: nextFieldsForPreview});
-        }
-    }
-
-    render() {
-        let {fieldsForPreview} = this.state;
-    
-        const previewStyle = {background: '#000', width: '100%', minHeight: '300px', padding: '0.3em 1em'};
-        const hStyle = {'color': '#eecc00'};
-        const pStyle = {'color': '#fff'};
-
-        let content = fieldsForPreview.map((f) => {
-            let {uid, type, value} = f;
-            
-            if (type === 'H') {
-                return <h2 key={`preview_${uid}`} style={hStyle}>{value}</h2>;
-            } else if (type === 'P') {
-                return <p key={`preview_${uid}`} style={pStyle}>{value}</p>;
-            } else if (type === 'L') {
-                return <p key={`preview_${uid}`} style={pStyle}>coming soon...</p>
-            } else {
-                return null;
-            }
-        });
-
-        return (
-            <div>
-                <h2 className="field-header">Preview:</h2>
-                <div style={previewStyle}>
-                    {content}
-                </div>
-            </div>
-        )
-
-    
-    }    
 }

@@ -125,6 +125,12 @@ textarea:focus {
   height: 30px;
   font-size: 1em;
   cursor: pointer;
+  text-transform: capitalize;
+}
+option {
+  text-transform: capitalize;
+  color: #282828;
+  font-weight: 500;
 }
 .html-label {
   font-size: 1.5em;
