@@ -21,6 +21,11 @@
   cursor: pointer;
   transition: all 150ms;
 }
+.navigation-list-item.buttons {
+  height: 30px;
+  line-height: 30px;
+  border: none;
+}
 .navigation-list-item:hover {
   background-color: #fff;
   color: #cc0000;
